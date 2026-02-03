@@ -20,7 +20,6 @@ import { ActiveCustomer, AppState } from '~/types';
 import Cart from '../components/cart/Cart';
 import Footer from '../components/footer/footer';
 import Header from '../components/header/header';
-import { pushToDataLayer } from '~/utils';
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
 	cacheControl({ staleWhileRevalidate: 60 * 60 * 24 * 7, maxAge: 5 });
@@ -80,24 +79,7 @@ export default component$(() => {
 	});
 
 	useContextProvider(APP_STATE, state);
-	useVisibleTask$(({ track }) => {
-		const order = track(() => state.activeOrder);
 
-		if (order && order.lines && order.lines.length > 0) {
-			pushToDataLayer({
-				event: 'cart_updated',
-				ecommerce: {
-					value: order.totalWithTax / 100,
-					currency: order.currencyCode,
-					items: order.lines.map((line) => ({
-						item_id: line.productVariant.id,
-						item_name: line.productVariant.name,
-						quantity: line.quantity,
-					})),
-				},
-			});
-		}
-	});
 	useVisibleTask$(async () => {
 		state.activeOrder = await getActiveOrderQuery();
 	});

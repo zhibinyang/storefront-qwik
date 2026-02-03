@@ -14,7 +14,12 @@ import { Order, OrderLine } from '~/generated/graphql';
 import { addItemToOrderMutation } from '~/providers/shop/orders/order';
 import { getProductBySlug } from '~/providers/shop/products/products';
 import { Variant } from '~/types';
-import { cleanUpParams, generateDocumentHead, isEnvVariableEnabled } from '~/utils';
+import {
+	cleanUpParams,
+	generateDocumentHead,
+	isEnvVariableEnabled,
+	pushToDataLayer,
+} from '~/utils';
 
 export const useProductLoader = routeLoader$(async ({ params }) => {
 	const { slug } = cleanUpParams(params);
@@ -161,6 +166,24 @@ export default component$(() => {
 													addItemToOrderErrorSignal.value = addItemToOrder.errorCode;
 												} else {
 													appState.activeOrder = addItemToOrder as Order;
+													pushToDataLayer({
+														event: 'add_to_cart',
+														ecommerce: {
+															currency: addItemToOrder.currencyCode,
+															value: addItemToOrder.totalWithTax / 100, // 转换为浮点数
+															items: [
+																{
+																	item_id: selectedVariantIdSignal.value,
+																	item_name: productSignal.value.name,
+																	price:
+																		(productSignal.value.variants.find(
+																			(v) => v.id === selectedVariantIdSignal.value
+																		)?.priceWithTax || 0) / 100,
+																	quantity: 1,
+																},
+															],
+														},
+													});
 												}
 											}
 										}}
