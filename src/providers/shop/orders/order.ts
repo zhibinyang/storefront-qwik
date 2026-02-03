@@ -163,6 +163,7 @@ gql`
 			taxTotal
 		}
 		shippingWithTax
+		total
 		totalWithTax
 		customer {
 			id
@@ -190,6 +191,7 @@ gql`
 		}
 		lines {
 			id
+			unitPrice
 			unitPriceWithTax
 			linePriceWithTax
 			quantity

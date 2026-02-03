@@ -3803,6 +3803,7 @@ export type AddPaymentToOrderMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -3843,6 +3844,7 @@ export type AddPaymentToOrderMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -3883,6 +3885,7 @@ export type TransitionOrderToStateMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -3923,6 +3926,7 @@ export type TransitionOrderToStateMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -4430,6 +4434,7 @@ export type ApplyCouponCodeMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -4470,6 +4475,7 @@ export type ApplyCouponCodeMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -4505,6 +4511,7 @@ export type RemoveCouponCodeMutation = {
 		subTotal: any;
 		subTotalWithTax: any;
 		shippingWithTax: any;
+		total: any;
 		totalWithTax: any;
 		discounts: Array<{
 			__typename?: 'Discount';
@@ -4545,6 +4552,7 @@ export type RemoveCouponCodeMutation = {
 		lines: Array<{
 			__typename?: 'OrderLine';
 			id: string;
+			unitPrice: any;
 			unitPriceWithTax: any;
 			linePriceWithTax: any;
 			quantity: number;
@@ -4582,6 +4590,7 @@ export type SetOrderShippingAddressMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -4622,6 +4631,7 @@ export type SetOrderShippingAddressMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -4662,6 +4672,7 @@ export type SetCustomerForOrderMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -4702,6 +4713,7 @@ export type SetCustomerForOrderMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -4741,6 +4753,7 @@ export type AddItemToOrderMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -4781,6 +4794,7 @@ export type AddItemToOrderMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -4822,6 +4836,7 @@ export type SetOrderShippingMethodMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -4862,6 +4877,7 @@ export type SetOrderShippingMethodMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -4892,6 +4908,7 @@ export type OrderDetailFragment = {
 	subTotal: any;
 	subTotalWithTax: any;
 	shippingWithTax: any;
+	total: any;
 	totalWithTax: any;
 	discounts: Array<{
 		__typename?: 'Discount';
@@ -4932,6 +4949,7 @@ export type OrderDetailFragment = {
 	lines: Array<{
 		__typename?: 'OrderLine';
 		id: string;
+		unitPrice: any;
 		unitPriceWithTax: any;
 		linePriceWithTax: any;
 		quantity: number;
@@ -4970,6 +4988,7 @@ export type AdjustOrderLineMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -5010,6 +5029,7 @@ export type AdjustOrderLineMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -5049,6 +5069,7 @@ export type RemoveOrderLineMutation = {
 				subTotal: any;
 				subTotalWithTax: any;
 				shippingWithTax: any;
+				total: any;
 				totalWithTax: any;
 				discounts: Array<{
 					__typename?: 'Discount';
@@ -5089,6 +5110,7 @@ export type RemoveOrderLineMutation = {
 				lines: Array<{
 					__typename?: 'OrderLine';
 					id: string;
+					unitPrice: any;
 					unitPriceWithTax: any;
 					linePriceWithTax: any;
 					quantity: number;
@@ -5124,6 +5146,7 @@ export type ActiveOrderQuery = {
 		subTotal: any;
 		subTotalWithTax: any;
 		shippingWithTax: any;
+		total: any;
 		totalWithTax: any;
 		discounts: Array<{
 			__typename?: 'Discount';
@@ -5164,6 +5187,7 @@ export type ActiveOrderQuery = {
 		lines: Array<{
 			__typename?: 'OrderLine';
 			id: string;
+			unitPrice: any;
 			unitPriceWithTax: any;
 			linePriceWithTax: any;
 			quantity: number;
@@ -5199,6 +5223,7 @@ export type OrderByCodeQuery = {
 		subTotal: any;
 		subTotalWithTax: any;
 		shippingWithTax: any;
+		total: any;
 		totalWithTax: any;
 		discounts: Array<{
 			__typename?: 'Discount';
@@ -5239,6 +5264,7 @@ export type OrderByCodeQuery = {
 		lines: Array<{
 			__typename?: 'OrderLine';
 			id: string;
+			unitPrice: any;
 			unitPriceWithTax: any;
 			linePriceWithTax: any;
 			quantity: number;
@@ -5286,6 +5312,7 @@ export type DetailedProductFragment = {
 		id: string;
 		name: string;
 		priceWithTax: any;
+		price: any;
 		currencyCode: CurrencyCode;
 		sku: string;
 		stockLevel: string;
@@ -5331,6 +5358,7 @@ export type ProductQuery = {
 			id: string;
 			name: string;
 			priceWithTax: any;
+			price: any;
 			currencyCode: CurrencyCode;
 			sku: string;
 			stockLevel: string;
@@ -5437,6 +5465,7 @@ export const OrderDetailFragmentDoc = gql`
 			taxTotal
 		}
 		shippingWithTax
+		total
 		totalWithTax
 		customer {
 			id
@@ -5464,6 +5493,7 @@ export const OrderDetailFragmentDoc = gql`
 		}
 		lines {
 			id
+			unitPrice
 			unitPriceWithTax
 			linePriceWithTax
 			quantity
@@ -5522,6 +5552,7 @@ export const DetailedProductFragmentDoc = gql`
 			id
 			name
 			priceWithTax
+			price
 			currencyCode
 			sku
 			stockLevel

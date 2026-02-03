@@ -7,15 +7,15 @@ import {
 	useTask$,
 	useVisibleTask$,
 } from '@qwik.dev/core';
+import { _ } from 'compiled-i18n';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { Address, CreateAddressInput, CreateCustomerInput } from '~/generated/graphql';
 import { getActiveCustomerAddressesQuery } from '~/providers/shop/customer/customer';
 import { getActiveOrderQuery } from '~/providers/shop/orders/order';
-import { isActiveCustomerValid, isShippingAddressValid } from '~/utils';
+import { isActiveCustomerValid, isShippingAddressValid, pushToDataLayer } from '~/utils';
 import AddressForm from '../address-form/AddressForm';
 import LockClosedIcon from '../icons/LockClosedIcon';
 import ShippingMethodSelector from '../shipping-method-selector/ShippingMethodSelector';
-import { _ } from 'compiled-i18n';
 
 type IProps = {
 	onForward$: QRL<
@@ -196,6 +196,29 @@ export default component$<IProps>(({ onForward$ }) => {
 							defaultShippingAddress,
 							defaultBillingAddress,
 						};
+
+						console.log('🚛 Proceed to payment clicked!');
+						const shippingMethodName =
+							appState.activeOrder?.shippingLines?.[0]?.shippingMethod?.name || 'Standard';
+						const trackingData = {
+							event: 'add_shipping_info',
+							ecommerce: {
+								currency: appState.activeOrder?.currencyCode || 'USD',
+								value: (appState.activeOrder?.subTotal || 0) / 100,
+								coupon: appState.activeOrder?.couponCodes?.[0] || '',
+								shipping_tier: shippingMethodName,
+								items: (appState.activeOrder?.lines || []).map((line) => ({
+									item_id: line.productVariant.sku,
+									item_name: line.productVariant.product.name,
+									item_variant: line.productVariant.name,
+									price: line.unitPrice / 100,
+									quantity: line.quantity,
+								})),
+							},
+						};
+						console.log('📊 Tracking data (add_shipping_info):', trackingData);
+						pushToDataLayer(trackingData);
+
 						onForward$(createCustomerInput, createShippingInput);
 					}
 				})}

@@ -1,4 +1,4 @@
-import { component$, useComputed$, useContext, useSignal } from '@qwik.dev/core';
+import { component$, useComputed$, useContext, useSignal, useVisibleTask$ } from '@qwik.dev/core';
 import { DocumentHead, routeLoader$ } from '@qwik.dev/router';
 import { _ } from 'compiled-i18n';
 import Alert from '~/components/alert/Alert';
@@ -55,6 +55,31 @@ export default component$(() => {
 			result[variant.id] = orderLine?.quantity || 0;
 		});
 		return result;
+	});
+
+	useVisibleTask$(({ track }) => {
+		track(() => productSignal.value);
+		track(() => selectedVariantSignal.value);
+		const variant = selectedVariantSignal.value;
+		if (variant) {
+			console.log('👀 View item:', productSignal.value.name);
+			pushToDataLayer({
+				event: 'view_item',
+				ecommerce: {
+					currency: variant.currencyCode || 'USD',
+					value: (variant.price || 0) / 100,
+					items: [
+						{
+							item_id: variant.sku,
+							item_name: productSignal.value.name,
+							item_variant: variant.name,
+							price: (variant.price || 0) / 100,
+							quantity: 1,
+						},
+					],
+				},
+			});
+		}
 	});
 
 	return (
@@ -176,7 +201,7 @@ export default component$(() => {
 															value:
 																(productSignal.value.variants.find(
 																	(v) => v.id === selectedVariantIdSignal.value
-																)?.priceWithTax || 0) / 100,
+																)?.price || 0) / 100,
 															items: [
 																{
 																	item_id:
@@ -191,7 +216,7 @@ export default component$(() => {
 																	price:
 																		(productSignal.value.variants.find(
 																			(v) => v.id === selectedVariantIdSignal.value
-																		)?.priceWithTax || 0) / 100,
+																		)?.price || 0) / 100,
 																	quantity: 1,
 																},
 															],

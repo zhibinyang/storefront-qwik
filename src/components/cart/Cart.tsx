@@ -61,21 +61,27 @@ export default component$(() => {
 													href="/checkout/"
 													class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 w-full"
 													onClick$={() => {
-														console.log(appState.activeOrder?.lines[0].productVariant);
-														pushToDataLayer({
+														console.log('🛒 Checkout clicked!');
+														console.log('Order data:', appState.activeOrder);
+
+														const trackingData = {
 															event: 'begin_checkout',
 															ecommerce: {
 																currency: appState.activeOrder?.currencyCode || 'USD',
-																value: (appState.activeOrder?.totalWithTax || 0) / 100,
+																value: (appState.activeOrder?.subTotal || 0) / 100,
 																items: (appState.activeOrder?.lines || []).map((line) => ({
 																	item_id: line.productVariant.sku,
 																	item_name: line.productVariant.product.name,
 																	item_variant: line.productVariant.name,
-																	price: line.unitPriceWithTax / 100,
+																	price: line.unitPrice / 100,
 																	quantity: line.quantity,
 																})),
 															},
-														});
+														};
+
+														console.log('📊 Tracking data:', trackingData);
+														pushToDataLayer(trackingData);
+														console.log('✅ DataLayer after push:', (window as any).dataLayer);
 													}}
 												>
 													{_`Checkout`}
