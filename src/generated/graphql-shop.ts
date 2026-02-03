@@ -30,6 +30,11 @@ export type Scalars = {
 
 export type ActiveOrderResult = NoActiveOrderError | Order;
 
+export type AddItemInput = {
+	productVariantId: Scalars['ID']['input'];
+	quantity: Scalars['Int']['input'];
+};
+
 export type AddPaymentToOrderResult =
 	| IneligiblePaymentMethodError
 	| NoActiveOrderError
@@ -134,6 +139,8 @@ export type AuthenticationResult = CurrentUser | InvalidCredentialsError | NotVe
 
 export type BooleanCustomFieldConfig = CustomField & {
 	__typename?: 'BooleanCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -763,6 +770,8 @@ export type CurrentUserChannel = {
 };
 
 export type CustomField = {
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -889,6 +898,8 @@ export type DateRange = {
  */
 export type DateTimeCustomFieldConfig = CustomField & {
 	__typename?: 'DateTimeCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -1145,6 +1156,8 @@ export type FacetValueTranslation = {
 
 export type FloatCustomFieldConfig = CustomField & {
 	__typename?: 'FloatCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -1344,6 +1357,8 @@ export type InsufficientStockError = ErrorResult & {
 
 export type IntCustomFieldConfig = CustomField & {
 	__typename?: 'IntCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -1709,6 +1724,8 @@ export const LanguageCode = {
 export type LanguageCode = (typeof LanguageCode)[keyof typeof LanguageCode];
 export type LocaleStringCustomFieldConfig = CustomField & {
 	__typename?: 'LocaleStringCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -1725,6 +1742,8 @@ export type LocaleStringCustomFieldConfig = CustomField & {
 
 export type LocaleTextCustomFieldConfig = CustomField & {
 	__typename?: 'LocaleTextCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -1760,6 +1779,8 @@ export type Mutation = {
 	__typename?: 'Mutation';
 	/** Adds an item to the Order. If custom fields are defined on the OrderLine entity, a third argument 'customFields' will be available. */
 	addItemToOrder: UpdateOrderItemsResult;
+	/** Adds mutliple items to the Order. Returns a list of errors for each item that failed to add. It will still add successful items. */
+	addItemsToOrder: UpdateMultipleOrderItemsResult;
 	/** Add a Payment to the Order */
 	addPaymentToOrder: AddPaymentToOrderResult;
 	/** Adjusts an OrderLine. If custom fields are defined on the OrderLine entity, a third argument 'customFields' of type `OrderLineCustomFieldsInput` will be available. */
@@ -1862,6 +1883,10 @@ export type Mutation = {
 export type MutationAddItemToOrderArgs = {
 	productVariantId: Scalars['ID']['input'];
 	quantity: Scalars['Int']['input'];
+};
+
+export type MutationAddItemsToOrderArgs = {
+	inputs: Array<AddItemInput>;
 };
 
 export type MutationAddPaymentToOrderArgs = {
@@ -2564,6 +2589,8 @@ export const Permission = {
 	ReadCustomer: 'ReadCustomer',
 	/** Grants permission to read CustomerGroup */
 	ReadCustomerGroup: 'ReadCustomerGroup',
+	/** Grants permission to read DashboardGlobalViews */
+	ReadDashboardGlobalViews: 'ReadDashboardGlobalViews',
 	/** Grants permission to read Facet */
 	ReadFacet: 'ReadFacet',
 	/** Grants permission to read Order */
@@ -2640,6 +2667,8 @@ export const Permission = {
 	UpdateTaxRate: 'UpdateTaxRate',
 	/** Grants permission to update Zone */
 	UpdateZone: 'UpdateZone',
+	/** Grants permission to write DashboardGlobalViews */
+	WriteDashboardGlobalViews: 'WriteDashboardGlobalViews',
 } as const;
 
 export type Permission = (typeof Permission)[keyof typeof Permission];
@@ -2912,6 +2941,26 @@ export type ProvinceList = PaginatedList & {
 	totalItems: Scalars['Int']['output'];
 };
 
+export type PublicPaymentMethod = {
+	__typename?: 'PublicPaymentMethod';
+	code: Scalars['String']['output'];
+	customFields?: Maybe<Scalars['JSON']['output']>;
+	description?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	name: Scalars['String']['output'];
+	translations: Array<PaymentMethodTranslation>;
+};
+
+export type PublicShippingMethod = {
+	__typename?: 'PublicShippingMethod';
+	code: Scalars['String']['output'];
+	customFields?: Maybe<Scalars['JSON']['output']>;
+	description?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	name: Scalars['String']['output'];
+	translations: Array<ShippingMethodTranslation>;
+};
+
 export type Query = {
 	__typename?: 'Query';
 	/** The active Channel */
@@ -2924,6 +2973,10 @@ export type Query = {
 	 * query will once again return `null`.
 	 */
 	activeOrder?: Maybe<Order>;
+	/** Get active payment methods */
+	activePaymentMethods: Array<Maybe<PublicPaymentMethod>>;
+	/** Get active shipping methods */
+	activeShippingMethods: Array<Maybe<PublicShippingMethod>>;
 	/** An array of supported Countries */
 	availableCountries: Array<Country>;
 	/** Returns a Collection either by its id or slug. If neither 'id' nor 'slug' is specified, an error will result. */
@@ -3076,6 +3129,8 @@ export type RegisterCustomerInput = {
 
 export type RelationCustomFieldConfig = CustomField & {
 	__typename?: 'RelationCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	entity: Scalars['String']['output'];
 	internal?: Maybe<Scalars['Boolean']['output']>;
@@ -3130,7 +3185,6 @@ export type SearchInput = {
 	collectionSlug?: InputMaybe<Scalars['String']['input']>;
 	facetValueFilters?: InputMaybe<Array<FacetValueFilterInput>>;
 	groupByProduct?: InputMaybe<Scalars['Boolean']['input']>;
-	inStock?: InputMaybe<Scalars['Boolean']['input']>;
 	skip?: InputMaybe<Scalars['Int']['input']>;
 	sort?: InputMaybe<SearchResultSortParameter>;
 	take?: InputMaybe<Scalars['Int']['input']>;
@@ -3158,7 +3212,6 @@ export type SearchResult = {
 	description: Scalars['String']['output'];
 	facetIds: Array<Scalars['ID']['output']>;
 	facetValueIds: Array<Scalars['ID']['output']>;
-	inStock: Scalars['Boolean']['output'];
 	price: SearchResultPrice;
 	priceWithTax: SearchResultPrice;
 	productAsset?: Maybe<SearchResultAsset>;
@@ -3281,6 +3334,8 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 export type StringCustomFieldConfig = CustomField & {
 	__typename?: 'StringCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -3334,6 +3389,8 @@ export type StringStructFieldConfig = StructField & {
 
 export type StructCustomFieldConfig = CustomField & {
 	__typename?: 'StructCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	fields: Array<StructFieldConfig>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
@@ -3435,6 +3492,8 @@ export type TaxRateList = PaginatedList & {
 
 export type TextCustomFieldConfig = CustomField & {
 	__typename?: 'TextCustomFieldConfig';
+	deprecated?: Maybe<Scalars['Boolean']['output']>;
+	deprecationReason?: Maybe<Scalars['String']['output']>;
 	description?: Maybe<Array<LocalizedString>>;
 	internal?: Maybe<Scalars['Boolean']['output']>;
 	label?: Maybe<Array<LocalizedString>>;
@@ -3502,9 +3561,27 @@ export type UpdateCustomerPasswordResult =
 	| PasswordValidationError
 	| Success;
 
+/**
+ * Returned when multiple items are added to an Order.
+ * The errorResults array contains the errors that occurred for each item, if any.
+ */
+export type UpdateMultipleOrderItemsResult = {
+	__typename?: 'UpdateMultipleOrderItemsResult';
+	errorResults: Array<UpdateOrderItemErrorResult>;
+	order: Order;
+};
+
 export type UpdateOrderInput = {
 	customFields?: InputMaybe<Scalars['JSON']['input']>;
 };
+
+/** Union type of all possible errors that can occur when adding or removing items from an Order. */
+export type UpdateOrderItemErrorResult =
+	| InsufficientStockError
+	| NegativeQuantityError
+	| OrderInterceptorError
+	| OrderLimitError
+	| OrderModificationError;
 
 export type UpdateOrderItemsResult =
 	| InsufficientStockError
@@ -3775,7 +3852,8 @@ export type AddPaymentToOrderMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  }
@@ -3854,7 +3932,8 @@ export type TransitionOrderToStateMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  }
@@ -4400,7 +4479,8 @@ export type ApplyCouponCodeMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  };
@@ -4474,7 +4554,8 @@ export type RemoveCouponCodeMutation = {
 				id: string;
 				name: string;
 				price: any;
-				product: { __typename?: 'Product'; id: string; slug: string };
+				sku: string;
+				product: { __typename?: 'Product'; id: string; slug: string; name: string };
 			};
 		}>;
 	} | null;
@@ -4550,7 +4631,8 @@ export type SetOrderShippingAddressMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  };
@@ -4629,7 +4711,8 @@ export type SetCustomerForOrderMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  };
@@ -4707,7 +4790,8 @@ export type AddItemToOrderMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  }
@@ -4787,7 +4871,8 @@ export type SetOrderShippingMethodMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  }
@@ -4856,7 +4941,8 @@ export type OrderDetailFragment = {
 			id: string;
 			name: string;
 			price: any;
-			product: { __typename?: 'Product'; id: string; slug: string };
+			sku: string;
+			product: { __typename?: 'Product'; id: string; slug: string; name: string };
 		};
 	}>;
 };
@@ -4933,7 +5019,8 @@ export type AdjustOrderLineMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  }
@@ -5011,7 +5098,8 @@ export type RemoveOrderLineMutation = {
 						id: string;
 						name: string;
 						price: any;
-						product: { __typename?: 'Product'; id: string; slug: string };
+						sku: string;
+						product: { __typename?: 'Product'; id: string; slug: string; name: string };
 					};
 				}>;
 		  }
@@ -5085,7 +5173,8 @@ export type ActiveOrderQuery = {
 				id: string;
 				name: string;
 				price: any;
-				product: { __typename?: 'Product'; id: string; slug: string };
+				sku: string;
+				product: { __typename?: 'Product'; id: string; slug: string; name: string };
 			};
 		}>;
 	} | null;
@@ -5159,7 +5248,8 @@ export type OrderByCodeQuery = {
 				id: string;
 				name: string;
 				price: any;
-				product: { __typename?: 'Product'; id: string; slug: string };
+				sku: string;
+				product: { __typename?: 'Product'; id: string; slug: string; name: string };
 			};
 		}>;
 	} | null;
@@ -5385,9 +5475,11 @@ export const OrderDetailFragmentDoc = gql`
 				id
 				name
 				price
+				sku
 				product {
 					id
 					slug
+					name
 				}
 			}
 		}

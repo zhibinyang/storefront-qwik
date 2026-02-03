@@ -201,9 +201,11 @@ gql`
 				id
 				name
 				price
+				sku
 				product {
 					id
 					slug
+					name
 				}
 			}
 		}

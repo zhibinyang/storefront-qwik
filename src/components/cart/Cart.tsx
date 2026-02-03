@@ -1,8 +1,8 @@
-import { _ } from 'compiled-i18n';
 import { component$, useContext } from '@qwik.dev/core';
 import { useLocation } from '@qwik.dev/router';
+import { _ } from 'compiled-i18n';
 import { APP_STATE } from '~/constants';
-import { isCheckoutPage } from '~/utils';
+import { isCheckoutPage, pushToDataLayer } from '~/utils';
 import CartContents from '../cart-contents/CartContents';
 import CartPrice from '../cart-totals/CartPrice';
 import CloseIcon from '../icons/CloseIcon';
@@ -60,6 +60,23 @@ export default component$(() => {
 												<a
 													href="/checkout/"
 													class="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary-600 hover:bg-primary-700 w-full"
+													onClick$={() => {
+														console.log(appState.activeOrder?.lines[0].productVariant);
+														pushToDataLayer({
+															event: 'begin_checkout',
+															ecommerce: {
+																currency: appState.activeOrder?.currencyCode || 'USD',
+																value: (appState.activeOrder?.totalWithTax || 0) / 100,
+																items: (appState.activeOrder?.lines || []).map((line) => ({
+																	item_id: line.productVariant.sku,
+																	item_name: line.productVariant.product.name,
+																	item_variant: line.productVariant.name,
+																	price: line.unitPriceWithTax / 100,
+																	quantity: line.quantity,
+																})),
+															},
+														});
+													}}
 												>
 													{_`Checkout`}
 												</a>

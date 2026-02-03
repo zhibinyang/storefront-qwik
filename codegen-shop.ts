@@ -1,11 +1,9 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
-import { DEV_API, LOCAL_API, PROD_API } from './src/constants';
+const DEV_API = process.env.VITE_VENDURE_DEV_URL || 'https://readonlydemo.vendure.io';
+const PROD_API = process.env.VITE_VENDURE_PROD_URL || 'https://readonlydemo.vendure.io';
+const LOCAL_API = process.env.VITE_VENDURE_LOCAL_URL || 'http://localhost:3000';
 
-let GRAPHQL_API = import.meta.env.IS_DEV
-	? DEV_API
-	: import.meta.env.IS_LOCAL
-		? LOCAL_API
-		: PROD_API;
+let GRAPHQL_API = process.env.IS_DEV ? DEV_API : process.env.IS_LOCAL ? LOCAL_API : PROD_API;
 
 GRAPHQL_API = `${GRAPHQL_API}/shop-api`;
 
