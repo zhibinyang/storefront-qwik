@@ -1,7 +1,11 @@
 {
-	"name": "storefront-qwik-starter",
-	"description": "A headless commerce storefront starter kit built with Vendure & Qwik",
-	"homepage": "https://qwik.builder.io/",
+	"name": "storefront-qwik-custom",
+	"description": "A custom fork of storefront-qwik-starter with GTM and pre-tax pricing support",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/zhibinyang/storefront-qwik"
+	},
+	"homepage": "https://github.com/zhibinyang/storefront-qwik",
 	"license": "",
 	"private": true,
 	"type": "module",

@@ -1,9 +1,25 @@
-# Vendure Qwik Storefront Starter️
+# Vendure Qwik Storefront (Custom Fork)
 
+> [!NOTE]
+> This project is a fork of the [official storefront-qwik-starter](https://github.com/vendurehq/storefront-qwik-starter), maintained by [zhibinyang](https://github.com/zhibinyang).
+
+## Major Changes & Features
+
+1. **GTM & E-commerce Events Tracking**: detailed implementation of Google Tag Manager events including `view_item`, `add_to_cart`, `begin_checkout`, `add_shipping_info`, and `purchase`.
+2. **Pre-tax Pricing**: GraphQL configuration updated to support pre-tax price display and tracking.
+3. **Customized Data Layer**: Enhanced data layer pushes for better analytics integration.
+
+> [!TIP]
+> If you have questions or want to discuss these changes, feel free to [open an issue](https://github.com/zhibinyang/storefront-qwik/issues).
+
+---
+
+Original README below:
+
+# Vendure Qwik Storefront Starter️
 
 > [!NOTE]
 > This project is **community-maintained**. For a storefront starter maintained by the Vendure team, see the [Next.js Starter](https://github.com/vendure-ecommerce/nextjs-starter-vendure)
-
 
 An e-commerce storefront for [Vendure](https://www.vendure.io) built with [Qwik](https://qwik.builder.io/) & [Qwik City](https://qwik.builder.io/qwikcity/overview).
 
