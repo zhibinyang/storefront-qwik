@@ -7,6 +7,7 @@ import {
 import { ENV_VARIABLES } from '~/env';
 import { SearchResponse } from '~/generated/graphql';
 import { ActiveCustomer, FacetWithValues, ShippingAddress } from '~/types';
+import { isBrowser } from '@qwik.dev/core';
 
 export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
 
@@ -180,4 +181,14 @@ export const generateDocumentHead = (
 		},
 	];
 	return { title, meta: [...OG_METATAGS, ...TWITTER_METATAGS] };
+};
+
+/**
+ * 安全地向 GTM DataLayer 推送数据
+ */
+export const pushToDataLayer = (data: Record<string, any>) => {
+	if (isBrowser) {
+		(window as any).dataLayer = (window as any).dataLayer || [];
+		(window as any).dataLayer.push(data);
+	}
 };
