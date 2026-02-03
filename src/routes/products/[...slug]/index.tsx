@@ -169,19 +169,25 @@ export default component$(() => {
 													pushToDataLayer({
 														event: 'add_to_cart',
 														ecommerce: {
-															currency: addItemToOrder.currencyCode,
-															value: addItemToOrder.totalWithTax / 100, // 转换为浮点数
-															items: [
-																{
-																	item_id: selectedVariantIdSignal.value,
-																	item_name: productSignal.value.name,
-																	price:
-																		(productSignal.value.variants.find(
-																			(v) => v.id === selectedVariantIdSignal.value
-																		)?.priceWithTax || 0) / 100,
-																	quantity: 1,
-																},
-															],
+															item_id: selectedVariantIdSignal.value,
+															item_name: productSignal.value.name,
+															currency:
+																productSignal.value.variants.find(
+																	(v) => v.id === selectedVariantIdSignal.value
+																)?.currencyCode || 'USD',
+															priceWithTax:
+																(productSignal.value.variants.find(
+																	(v) => v.id === selectedVariantIdSignal.value
+																)?.priceWithTax || 0) / 100,
+															price:
+																(productSignal.value.variants.find(
+																	(v) => v.id === selectedVariantIdSignal.value
+																)?.price || 0) / 100,
+															sku:
+																productSignal.value.variants.find(
+																	(v) => v.id === selectedVariantIdSignal.value
+																)?.sku || '',
+															quantity: 1,
 														},
 													});
 												}
