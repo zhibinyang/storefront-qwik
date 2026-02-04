@@ -1,4 +1,5 @@
 import { $, component$, useContext, useVisibleTask$ } from '@qwik.dev/core';
+import { _ } from 'compiled-i18n';
 import { APP_STATE, CUSTOMER_NOT_DEFINED_ID } from '~/constants';
 import { logoutMutation } from '~/providers/shop/account/account';
 import { getActiveCustomerQuery } from '~/providers/shop/customer/customer';
@@ -8,7 +9,6 @@ import MenuIcon from '../icons/MenuIcon';
 import ShoppingBagIcon from '../icons/ShoppingBagIcon';
 import UserIcon from '../icons/UserIcon';
 import SearchBar from '../search-bar/SearchBar';
-import { _ } from 'compiled-i18n';
 
 export default component$(() => {
 	const appState = useContext(APP_STATE);
@@ -55,7 +55,7 @@ export default component$(() => {
 								<p class="hidden sm:block">
 									{_`Exclusive: Get your own`}{' '}
 									<a
-										href="https://github.com/vendure-ecommerce/storefront-qwik-starter"
+										href="https://github.com/zhibinyang/storefront-qwik"
 										target="_blank"
 										class="underline"
 									>

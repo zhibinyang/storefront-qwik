@@ -2,10 +2,7 @@ import { component$ } from '@qwik.dev/core';
 
 export const GitHubLink = component$(() => {
 	return (
-		<a
-			href="https://github.com/vendure-ecommerce/storefront-qwik-starter"
-			aria-label="View source on GitHub"
-		>
+		<a href="https://github.com/zhibinyang/storefront-qwik" aria-label="View source on GitHub">
 			<svg
 				width="50"
 				height="50"
