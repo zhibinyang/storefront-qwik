@@ -1,0 +1,46 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+        env:
+          VITE_VENDURE_PROD_URL: 'https://readonlydemo.vendure.io'
+          VITE_VENDURE_DEV_URL: 'https://readonlydemo.vendure.io'
+          VITE_VENDURE_LOCAL_URL: 'http://localhost:3000'
+          VITE_IS_READONLY_INSTANCE: 'true'
+          VITE_SHOW_PAYMENT_STEP: 'true'
+          VITE_SHOW_REVIEWS: 'true'
+          VITE_SECURE_COOKIE: 'true'
+          VITE_STRIPE_PUBLISHABLE_KEY: ''
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Deploy the dist directory
+          command: pages deploy dist --project-name=storefront-qwik
